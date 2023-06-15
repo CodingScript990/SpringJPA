@@ -1,10 +1,12 @@
 package com.example.jpa.service;
 
+import com.example.jpa.dto.StudentDto;
 import com.example.jpa.entities.StudentEntity;
 import com.example.jpa.repos.AppRepository;
 import com.example.jpa.repos.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ public class AppService {
 
     // Create
     // createStudent method
-    public void createStudent(String name, Integer age, String phone, String email) {
+    public StudentDto createStudent(String name, Integer age, String phone, String email) {
         // 새로운(new) Student(Entity)를 만들고 싶음
         StudentEntity newEntity = new StudentEntity();
         newEntity.setName(name);
@@ -53,7 +55,9 @@ public class AppService {
         newEntity.setEmail(email);
 
         // repository.save()
-        this.studentRepository.save(newEntity);
+        // save() 메서드는 생성된 Entity 를 반환한다
+        newEntity = this.studentRepository.save(newEntity);
+        return StudentDto.fromEntity(newEntity);
     }
 
     // Read
@@ -75,8 +79,25 @@ public class AppService {
 
     // Read All
     // readStudentAll => list type
-    public void readStudentAll() {
+    public List<StudentDto> readStudentAll() {
         System.out.println(this.studentRepository.findAll());
+        // Entity 와 Dto 의 값을 분리함
+        // Entity 를 받아오는 작업
+        List<StudentEntity> studentEntityList = this.studentRepository.findAll();
+        // Dto 를 받아오는 작업
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        // Entity 를 받아와주는 작업
+        for (StudentEntity studentEntity : this.studentRepository.findAll()) {
+            // StudentDto 를 인스턴스화 함
+            //StudentDto studentDto = new StudentDto();
+            // Entity 값을 받고 보여줌 => id, name, email
+//            studentDto.setId(studentEntity.getId());
+//            studentDto.setName(studentEntity.getName());
+//            studentDto.setEmail(studentEntity.getEmail());
+            studentDtoList.add(StudentDto.fromEntity(studentEntity)); // StudentDto 를 부여받아 재사용성을 높여줌
+        }
+        // studentDtoList 를 반환받음
+        return studentDtoList;
     }
 
     // Update

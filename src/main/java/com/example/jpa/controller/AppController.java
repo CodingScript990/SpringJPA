@@ -1,5 +1,7 @@
 package com.example.jpa.controller;
 
+import com.example.jpa.dto.StudentDto;
+import com.example.jpa.entities.StudentEntity;
 import com.example.jpa.service.AppService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -66,9 +68,10 @@ public class AppController {
 
     // Read All
     @GetMapping("read-all")
-    public @ResponseBody String readAll() {
+    public @ResponseBody List<StudentDto> readAll() {
         this.service.readStudentAll();
-        return "done-read-all";
+//        return "done-read-all";
+        return this.service.readStudentAll();
     }
 
     // Read
