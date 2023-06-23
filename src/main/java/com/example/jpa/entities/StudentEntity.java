@@ -3,6 +3,8 @@ package com.example.jpa.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
+
 /**
  * create table students (
  *  id integer primary key autoincrement,
@@ -10,12 +12,13 @@ import lombok.Data;
  *  age integer,
  *  phone text,
  *  email text
+ *  created_at timestamp default (datetime('now'))
  */
 
 @Data
 @Entity // 데이터베이스 테이블의 레코드를 나타냄
 @Table(name = "students") // table 정의
-public class StudentEntity { // student_entity
+public class StudentEntity extends BaseEntity { // student_entity
     // Member Field
     @Id // Pk 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동으로 생성 해달라는 의미
